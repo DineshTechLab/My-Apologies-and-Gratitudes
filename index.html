@@ -1,0 +1,304 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Special Note For Shy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0f0a0c;
+      overflow-x: hidden;
+    }
+    
+    .font-serif-custom {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    
+    .font-handwriting {
+      font-family: 'Caveat', cursive;
+    }
+
+    /* Background Blur Overlay */
+    .bg-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('1000607628.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.35) blur(5px);
+      transition: filter 0.8s ease;
+      z-index: 1;
+    }
+
+    /* Glassmorphism Card Style */
+    .glass-card {
+      background: rgba(25, 16, 21, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 210, 220, 0.18);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(229, 152, 155, 0.2);
+    }
+
+    /* Floating Animations */
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+
+    .animate-float {
+      animation: floatSoft 4s ease-in-out infinite;
+    }
+
+    /* Unfold Letter Animation */
+    @keyframes unfoldLetter {
+      0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(50px) rotateX(-15deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0) rotateX(0deg);
+      }
+    }
+
+    .animate-unfold {
+      animation: unfoldLetter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Floating Hearts Burst */
+    .heart-particle {
+      position: fixed;
+      pointer-events: none;
+      color: #f3b0c3;
+      z-index: 99;
+      animation: floatUp 3.2s linear forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(0.8) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.4) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Custom Scrollbar for Letter */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(229, 152, 155, 0.4);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(229, 152, 155, 0.7);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 relative">
+
+  <!-- Background Image Screen Overlay -->
+  <div class="bg-image" id="bgImg"></div>
+
+  <!-- Top Control Bar for Image Uploads -->
+  <div class="fixed top-4 z-50 flex flex-wrap gap-2 sm:gap-3 items-center justify-center bg-black/60 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-xs text-white shadow-2xl">
+    <span class="text-pink-200 font-medium">Custom Images:</span>
+    
+    <label for="userImgUpload" class="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-semibold px-3 py-1 rounded-full cursor-pointer transition-all shadow-md">
+      Your Photo
+    </label>
+    <input type="file" id="userImgUpload" accept="image/*" class="hidden" onchange="loadCustomUserImg(event)">
+
+    <label for="bgImgUpload" class="bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-700 hover:to-pink-600 text-white font-semibold px-3 py-1 rounded-full cursor-pointer transition-all shadow-md">
+      Background Photo
+    </label>
+    <input type="file" id="bgImgUpload" accept="image/*" class="hidden" onchange="loadCustomBg(event)">
+  </div>
+
+  <!-- Main Display Container -->
+  <div class="relative z-10 w-full max-w-2xl my-12">
+
+    <!-- COVER STAGE (Envelope & Friendship Avatar) -->
+    <div id="envelopeWrapper" class="w-full max-w-md mx-auto transition-all duration-500">
+      <div class="bg-gradient-to-br from-[#fff3ee] to-[#fce4da] rounded-3xl p-8 sm:p-10 text-center shadow-2xl border-2 border-white/90 relative overflow-hidden animate-float">
+        
+        <!-- Top Banner Badge -->
+        <div class="inline-flex items-center gap-1.5 bg-rose-100 text-rose-800 text-xs font-semibold px-3 py-1 rounded-full mb-6 shadow-sm border border-rose-200">
+          <span>🤝</span>
+          <span>Shared with Friendship & Respect</span>
+        </div>
+
+        <!-- User Photo Avatar with Friendship Badge -->
+        <div class="relative w-36 h-36 mx-auto mb-6">
+          <!-- Outer Decorative Rings -->
+          <div class="absolute inset-0 rounded-full border-2 border-dashed border-rose-300 animate-spin" style="animation-duration: 20s;"></div>
+          <div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-pink-400 to-rose-300 opacity-30 blur-sm"></div>
+          
+          <!-- Profile Image -->
+          <img id="userAvatar" src="1000588538.png" alt="Your Photo" class="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10 object-top" onerror="this.src='https://placehold.co/200x200/e5989b/ffffff?text=Your+Photo'">
+          
+          <!-- Friendship Emblem Overlay Badge -->
+          <div class="absolute bottom-0 right-0 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-2.5 rounded-full shadow-lg border-2 border-white z-20 flex items-center justify-center text-sm" title="Friendship & Goodwill">
+            🤝
+          </div>
+        </div>
+
+        <!-- Envelope Cover Titles -->
+        <h1 class="font-handwriting text-4xl text-rose-950 mb-2 font-bold">A Heartfelt Note for Shy</h1>
+        <p class="text-xs text-rose-700 font-medium mb-8 tracking-wide">Please open with a clear mind and open heart...</p>
+
+        <!-- Open Card Button -->
+        <button onclick="openLetter()" class="group relative inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg shadow-rose-500/30 transition-all duration-300 hover:scale-105 active:scale-95 text-sm">
+          <span class="text-lg group-hover:scale-125 transition-transform duration-300">✉️</span>
+          <span>Open Invitation Note</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- UNFOLDED LETTER STAGE (Initially Hidden) -->
+    <div id="letterPaper" class="hidden glass-card rounded-3xl p-6 sm:p-10 text-pink-100 animate-unfold relative">
+      
+      <!-- Top Header -->
+      <div class="text-center mb-6">
+        <span class="text-2xl">🕊️</span>
+        <h2 class="font-serif-custom text-3xl sm:text-4xl text-pink-200 font-semibold mt-1">Dear Shy...</h2>
+        <p class="text-xs sm:text-sm italic text-rose-300/90 mt-2 max-w-lg mx-auto leading-relaxed">
+          I am writing this with complete clarity and respect as a friend—not to patch up or impress, but to leave us with warmth, peace, and understanding.
+        </p>
+      </div>
+
+      <!-- Letter Body Content -->
+      <div class="space-y-4 text-xs sm:text-sm leading-relaxed text-pink-100/90 text-justify max-h-[60vh] overflow-y-auto pr-2">
+        
+        <p>
+          First and foremost, I want to offer my sincere apologies for everything that happened, especially if you ever felt annoyed or frustrated by the reels or messages I sent. I never intended to make you feel uncomfortable or upset, and I genuinely hope you don't carry any lingering resentment or regret about our time together.
+        </p>
+
+        <p>
+          I also want to express my deepest gratitude. You were the first person in a very long time to spend so much of your own time and care on me. I know I wasn't able to give you as much time or presence as you deserved—initially due to family boundaries, work pressures, and my own struggles which i did not speak with clear clarity and sorry i think now its not good explain. However Thank you for every fun and meaningful moment we shared up until today.
+        </p>
+
+        <!-- Highlight Box -->
+        <div class="bg-white/5 border-l-4 border-pink-400 p-4 rounded-r-xl my-4 text-pink-200 italic leading-relaxed">
+          I have fully accepted reality and moved forward. The quick clarity actually gave me a constructive gift: extra time to focus on self-improvement and changing for the better. Whether the decision came down to looks, physical appearance, or driving confidence, I hold zero bitterness. Time always reveals what is meant for us, and I refuse to let anything pull me down.
+        </div>
+
+        <p>
+          I wrote this because I hold a very small circle, and you were a truly special part of it. I wanted our final chapter to end on a dignified, positive note—free of any misunderstandings or unworthy feelings. You will always remain in my memories as a cute, daring, open-minded well-wisher, guide, and friend.
+        </p>
+
+        <div class="text-center italic text-rose-300 text-xs pt-2">
+Please tell if rejection eas due to the looks or physical appearance or liability to drive that doesn'take me down again if it's even reason .If might be reason I got rejected again. Atleast I get clarity so quick I have got some more time to change. 
+
+You will always be a special person kn my memories and cute mentor , open well wisher guide and friend in my memories         </div>
+
+
+        <!-- Wishes Box -->
+        <div class="bg-rose-950/40 border border-rose-400/30 p-4 sm:p-5 rounded-2xl my-4 text-rose-200 text-center leading-relaxed font-medium">
+          But Please know I am completely out of any dark mindset and in a good place mentally. If our paths ever happen to cross again naturally in the future, I hope we can smile as old friends. Until then, thank you for everything, and I genuinely wish you the very best in your life and with your future partner as you build the wonderful journey ahead.
+        </div>
+
+        <div class="text-center italic text-rose-300 text-xs pt-2">
+          Thank you for reading this with a good heart. Once again, sorry for any inadvertent ignorance or frustration from my side.
+        </div>
+
+      </div>
+
+      <!-- Letter Signature Footer -->
+      <div class="mt-6 pt-4 border-t border-white/10 flex flex-col items-center justify-center text-center">
+        <div class="flex items-center gap-2 text-rose-300 text-sm font-semibold">
+          <span>Created with Friendship</span>
+          <span>•</span>
+          <span>Heartfelt Closure</span>
+        </div>
+        <div class="text-2xl text-rose-400 mt-1">♥</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Open Letter Animation
+    function openLetter() {
+      const wrapper = document.getElementById('envelopeWrapper');
+      const letter = document.getElementById('letterPaper');
+      const bg = document.getElementById('bgImg');
+
+      // Create burst of floating hearts
+      createHeartBurst();
+
+      // Fade out envelope cover
+      wrapper.style.transform = 'scale(0.85)';
+      wrapper.style.opacity = '0';
+
+      setTimeout(() => {
+        wrapper.style.display = 'none';
+        letter.classList.remove('hidden');
+        bg.style.filter = 'brightness(0.3) blur(3px)';
+      }, 400);
+    }
+
+    // Load Custom Background Image
+    function loadCustomBg(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('bgImg').style.backgroundImage = `url('${e.target.result}')`;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Load Custom User Avatar Image
+    function loadCustomUserImg(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('userAvatar').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Floating Hearts Burst Effect
+    function createHeartBurst() {
+      const hearts = ['♥', '💖', '🕊️', '🌸', '✨'];
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.className = 'heart-particle';
+          heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.top = (80 + Math.random() * 20) + 'vh';
+          heart.style.fontSize = (16 + Math.random() * 18) + 'px';
+          heart.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+          document.body.appendChild(heart);
+
+          setTimeout(() => heart.remove(), 4000);
+        }, i * 70);
+      }
+    }
+  </script>
+
+</body>
+</html>
